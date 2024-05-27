@@ -1,5 +1,5 @@
 resource "aws_security_group" "security_group_lb" {
-  name = "security_group_lb"
+  name = "security-group-lb"
   vpc_id = module.vpc.vpc_id
 }
 
@@ -26,7 +26,7 @@ resource "aws_security_group_rule" "security_group_egress_role_lb" {
 
 #Private network
 resource "aws_security_group" "security_group_private" {
-  name = "security_group_private"
+  name = "security-group-private"
   vpc_id = module.vpc.vpc_id
 }
 

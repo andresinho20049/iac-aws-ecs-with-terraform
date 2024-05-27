@@ -1,12 +1,12 @@
 resource "aws_lb" "lb_application" {
-  name = "lb_ecs_${var.enviroment}"
+  name = "lb-ecs-${var.enviroment}"
   load_balancer_type = "application"
   security_groups = [aws_security_group.security_group_lb.id]
-  subnets = [module.vpc.public_subnets]
+  subnets = module.vpc.public_subnets
 }
 
 resource "aws_lb_target_group" "lb_target_group" {
-  name        = "lb_target_ecs_${var.enviroment}"
+  name        = "lb-target-ecs-${var.enviroment}"
   port        = 8080
   protocol    = "HTTP"
   target_type = "ip"
@@ -15,7 +15,7 @@ resource "aws_lb_target_group" "lb_target_group" {
 
 resource "aws_lb_listener" "lb_listener" {
   load_balancer_arn = aws_lb.lb_application.arn
-  port              = "80"
+  port              = "8080"
   protocol          = "HTTP"
 
   default_action {

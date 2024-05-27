@@ -1,5 +1,5 @@
 resource "aws_iam_role" "iam_role" {
-  name = "iam_role_ecs_${var.enviroment}"
+  name = "iam-role-ecs-${var.enviroment}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -18,7 +18,7 @@ resource "aws_iam_role" "iam_role" {
 }
 
 resource "aws_iam_role_policy" "iam_role_policy" {
-  name = "iam_role_policy_ecs_${var.enviroment}"
+  name = "iam-role-policy-ecs-${var.enviroment}"
   role = aws_iam_role.iam_role.id
 
   policy = jsonencode({
@@ -41,6 +41,6 @@ resource "aws_iam_role_policy" "iam_role_policy" {
 }
 
 resource "aws_iam_instance_profile" "iam_instance_profile" {
-  name = "iam_instance_profile_ecs_${var.enviroment}"
+  name = "iam-instance-profile-ecs-${var.enviroment}"
   role = aws_iam_role.iam_role.name
 }
