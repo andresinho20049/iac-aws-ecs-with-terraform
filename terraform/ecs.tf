@@ -27,8 +27,8 @@ resource "aws_ecs_task_definition" "ecs_task_fargate" {
       essential = true
       portMappings = [
         {
-          containerPort = 8080
-          hostPort      = 8080
+          containerPort = var.container_port
+          hostPort      = var.container_port
         }
       ]
     }
@@ -46,7 +46,7 @@ resource "aws_ecs_service" "ecs_service" {
   load_balancer {
     target_group_arn = aws_lb_target_group.lb_target_group.arn
     container_name   = "${var.container_name}"
-    container_port   = 8080
+    container_port   = var.container_port
   }
 
   network_configuration {
