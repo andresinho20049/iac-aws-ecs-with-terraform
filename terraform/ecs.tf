@@ -1,5 +1,5 @@
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "ecs-cluster-${var.enviroment}"
+  name = "ecs-cluster-${var.service_name}"
 }
 
 resource "aws_ecs_cluster_capacity_providers" "ecs_cluster_fargate" {
@@ -13,15 +13,15 @@ resource "aws_ecs_cluster_capacity_providers" "ecs_cluster_fargate" {
 }
 
 resource "aws_ecs_task_definition" "ecs_task_fargate" {
-  family                   = "ecs-task-fargate-${var.enviroment}"
+  family                   = "ecs-task-fargate-${var.service_name}"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = 512
   memory                   = 1024
   container_definitions = jsonencode([
     {
-      name      = "docker-mockapi-${var.enviroment}"
-      image     = "andresinho200498/mockapi"
+      name      = "${var.container_name}"
+      image     = "${var.image}"
       cpu       = 512
       memory    = 1024
       essential = true
@@ -38,14 +38,14 @@ resource "aws_ecs_task_definition" "ecs_task_fargate" {
 }
 
 resource "aws_ecs_service" "ecs_service" {
-  name            = "ecs-service-${var.enviroment}"
+  name            = "ecs-service-${var.service_name}"
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.ecs_task_fargate.arn
   desired_count   = 3
 
   load_balancer {
     target_group_arn = aws_lb_target_group.lb_target_group.arn
-    container_name   = "docker-mockapi-${var.enviroment}"
+    container_name   = "${var.container_name}"
     container_port   = 8080
   }
 
